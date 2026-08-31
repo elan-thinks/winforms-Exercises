@@ -28,6 +28,7 @@ namespace Calculator
         /// </summary>
         private void InitializeComponent()
         {
+            lblExpression = new Label();
             txtDisplay = new TextBox();
             btn7 = new Button();
             btn8 = new Button();
@@ -49,10 +50,20 @@ namespace Calculator
             btnBackspace = new Button();
             SuspendLayout();
             // 
+            // lblExpression
+            // 
+            lblExpression.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            lblExpression.ForeColor = Color.Gray;
+            lblExpression.Location = new Point(20, 12);
+            lblExpression.Name = "lblExpression";
+            lblExpression.Size = new Size(260, 22);
+            lblExpression.TabIndex = 19;
+            lblExpression.TextAlign = ContentAlignment.MiddleRight;
+            // 
             // txtDisplay
             // 
             txtDisplay.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
-            txtDisplay.Location = new Point(20, 20);
+            txtDisplay.Location = new Point(20, 36);
             txtDisplay.Name = "txtDisplay";
             txtDisplay.ReadOnly = true;
             txtDisplay.Size = new Size(260, 39);
@@ -63,7 +74,7 @@ namespace Calculator
             // btn7
             // 
             btn7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn7.Location = new Point(20, 80);
+            btn7.Location = new Point(20, 95);
             btn7.Name = "btn7";
             btn7.Size = new Size(55, 45);
             btn7.TabIndex = 1;
@@ -74,7 +85,7 @@ namespace Calculator
             // btn8
             // 
             btn8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn8.Location = new Point(85, 80);
+            btn8.Location = new Point(85, 95);
             btn8.Name = "btn8";
             btn8.Size = new Size(55, 45);
             btn8.TabIndex = 2;
@@ -85,7 +96,7 @@ namespace Calculator
             // btn9
             // 
             btn9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn9.Location = new Point(150, 80);
+            btn9.Location = new Point(150, 95);
             btn9.Name = "btn9";
             btn9.Size = new Size(55, 45);
             btn9.TabIndex = 3;
@@ -96,7 +107,7 @@ namespace Calculator
             // btnDivide
             // 
             btnDivide.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btnDivide.Location = new Point(215, 80);
+            btnDivide.Location = new Point(215, 95);
             btnDivide.Name = "btnDivide";
             btnDivide.Size = new Size(65, 45);
             btnDivide.TabIndex = 4;
@@ -107,7 +118,7 @@ namespace Calculator
             // btn4
             // 
             btn4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn4.Location = new Point(20, 135);
+            btn4.Location = new Point(20, 150);
             btn4.Name = "btn4";
             btn4.Size = new Size(55, 45);
             btn4.TabIndex = 5;
@@ -118,7 +129,7 @@ namespace Calculator
             // btn5
             // 
             btn5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn5.Location = new Point(85, 135);
+            btn5.Location = new Point(85, 150);
             btn5.Name = "btn5";
             btn5.Size = new Size(55, 45);
             btn5.TabIndex = 6;
@@ -129,7 +140,7 @@ namespace Calculator
             // btn6
             // 
             btn6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn6.Location = new Point(150, 135);
+            btn6.Location = new Point(150, 150);
             btn6.Name = "btn6";
             btn6.Size = new Size(55, 45);
             btn6.TabIndex = 7;
@@ -140,7 +151,7 @@ namespace Calculator
             // btnMultiply
             // 
             btnMultiply.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btnMultiply.Location = new Point(215, 135);
+            btnMultiply.Location = new Point(215, 150);
             btnMultiply.Name = "btnMultiply";
             btnMultiply.Size = new Size(65, 45);
             btnMultiply.TabIndex = 8;
@@ -151,7 +162,7 @@ namespace Calculator
             // btn1
             // 
             btn1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn1.Location = new Point(20, 190);
+            btn1.Location = new Point(20, 205);
             btn1.Name = "btn1";
             btn1.Size = new Size(55, 45);
             btn1.TabIndex = 9;
@@ -162,7 +173,7 @@ namespace Calculator
             // btn2
             // 
             btn2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn2.Location = new Point(85, 190);
+            btn2.Location = new Point(85, 205);
             btn2.Name = "btn2";
             btn2.Size = new Size(55, 45);
             btn2.TabIndex = 10;
@@ -173,7 +184,7 @@ namespace Calculator
             // btn3
             // 
             btn3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn3.Location = new Point(150, 190);
+            btn3.Location = new Point(150, 205);
             btn3.Name = "btn3";
             btn3.Size = new Size(55, 45);
             btn3.TabIndex = 11;
@@ -184,7 +195,7 @@ namespace Calculator
             // btnSubtract
             // 
             btnSubtract.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btnSubtract.Location = new Point(215, 190);
+            btnSubtract.Location = new Point(215, 205);
             btnSubtract.Name = "btnSubtract";
             btnSubtract.Size = new Size(65, 45);
             btnSubtract.TabIndex = 12;
@@ -195,7 +206,7 @@ namespace Calculator
             // btn0
             // 
             btn0.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btn0.Location = new Point(20, 245);
+            btn0.Location = new Point(20, 260);
             btn0.Name = "btn0";
             btn0.Size = new Size(55, 45);
             btn0.TabIndex = 13;
@@ -206,7 +217,7 @@ namespace Calculator
             // btnDecimal
             // 
             btnDecimal.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btnDecimal.Location = new Point(85, 245);
+            btnDecimal.Location = new Point(85, 260);
             btnDecimal.Name = "btnDecimal";
             btnDecimal.Size = new Size(55, 45);
             btnDecimal.TabIndex = 14;
@@ -217,7 +228,7 @@ namespace Calculator
             // btnEquals
             // 
             btnEquals.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btnEquals.Location = new Point(150, 245);
+            btnEquals.Location = new Point(150, 260);
             btnEquals.Name = "btnEquals";
             btnEquals.Size = new Size(55, 45);
             btnEquals.TabIndex = 15;
@@ -228,7 +239,7 @@ namespace Calculator
             // btnAdd
             // 
             btnAdd.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAdd.Location = new Point(215, 245);
+            btnAdd.Location = new Point(215, 260);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(65, 45);
             btnAdd.TabIndex = 16;
@@ -239,7 +250,7 @@ namespace Calculator
             // btnClear
             // 
             btnClear.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnClear.Location = new Point(20, 300);
+            btnClear.Location = new Point(20, 315);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(120, 40);
             btnClear.TabIndex = 17;
@@ -250,7 +261,7 @@ namespace Calculator
             // btnBackspace
             // 
             btnBackspace.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            btnBackspace.Location = new Point(150, 300);
+            btnBackspace.Location = new Point(150, 315);
             btnBackspace.Name = "btnBackspace";
             btnBackspace.Size = new Size(130, 40);
             btnBackspace.TabIndex = 18;
@@ -262,7 +273,8 @@ namespace Calculator
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(300, 360);
+            ClientSize = new Size(300, 375);
+            Controls.Add(lblExpression);
             Controls.Add(btnBackspace);
             Controls.Add(btnClear);
             Controls.Add(btnAdd);
@@ -293,6 +305,7 @@ namespace Calculator
 
         #endregion
 
+        private Label lblExpression;
         private TextBox txtDisplay;
         private Button btn7;
         private Button btn8;

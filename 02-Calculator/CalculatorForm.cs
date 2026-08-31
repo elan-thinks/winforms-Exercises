@@ -15,6 +15,34 @@ public partial class CalculatorForm : Form
     {
         InitializeComponent();
         txtDisplay.Text = "0";
+        lblExpression.Text = string.Empty;
+    }
+
+    /// <summary>
+    /// Updates the expression preview label so the user can see what they typed.
+    /// </summary>
+    private void UpdateExpressionDisplay()
+    {
+        if (_justCalculated)
+        {
+            // After equals we already set the label in btnEquals_Click
+            return;
+        }
+
+        if (string.IsNullOrEmpty(_expression))
+        {
+            lblExpression.Text = string.Empty;
+        }
+        else if (_lastWasOperator)
+        {
+            // Show expression so far (ends with operator), e.g. "8 + "
+            lblExpression.Text = _expression.TrimEnd();
+        }
+        else
+        {
+            // Show full expression including current number, e.g. "8 + 5"
+            lblExpression.Text = (_expression + txtDisplay.Text).Trim();
+        }
     }
 
     private void btnNumber_Click(object sender, EventArgs e)
@@ -31,6 +59,7 @@ public partial class CalculatorForm : Form
             txtDisplay.Text = digit;
             _justCalculated = false;
             _lastWasOperator = false;
+            UpdateExpressionDisplay();
             return;
         }
 
@@ -43,6 +72,8 @@ public partial class CalculatorForm : Form
         {
             txtDisplay.Text += digit;
         }
+
+        UpdateExpressionDisplay();
     }
 
     private void btnDecimal_Click(object sender, EventArgs e)
@@ -53,6 +84,7 @@ public partial class CalculatorForm : Form
             txtDisplay.Text = "0.";
             _justCalculated = false;
             _lastWasOperator = false;
+            UpdateExpressionDisplay();
             return;
         }
 
@@ -60,6 +92,7 @@ public partial class CalculatorForm : Form
         {
             txtDisplay.Text = "0.";
             _lastWasOperator = false;
+            UpdateExpressionDisplay();
             return;
         }
 
@@ -68,6 +101,8 @@ public partial class CalculatorForm : Form
         {
             txtDisplay.Text += ".";
         }
+
+        UpdateExpressionDisplay();
     }
 
     private void btnOperator_Click(object sender, EventArgs e)
@@ -82,6 +117,7 @@ public partial class CalculatorForm : Form
             // Reset after error
             _expression = string.Empty;
             txtDisplay.Text = "0";
+            lblExpression.Text = string.Empty;
             _lastWasOperator = false;
             _justCalculated = false;
             return;
@@ -93,6 +129,7 @@ public partial class CalculatorForm : Form
             _expression = txtDisplay.Text + " " + op + " ";
             _justCalculated = false;
             _lastWasOperator = true;
+            UpdateExpressionDisplay();
             return;
         }
 
@@ -103,12 +140,14 @@ public partial class CalculatorForm : Form
             {
                 _expression = _expression[..^3] + op + " ";
             }
+            UpdateExpressionDisplay();
             return;
         }
 
         // Append current number and the operator to the expression
         _expression += txtDisplay.Text + " " + op + " ";
         _lastWasOperator = true;
+        UpdateExpressionDisplay();
     }
 
     private void btnEquals_Click(object sender, EventArgs e)
@@ -127,8 +166,12 @@ public partial class CalculatorForm : Form
             if (string.IsNullOrWhiteSpace(_expression))
             {
                 _justCalculated = true;
+                lblExpression.Text = string.Empty;
                 return;
             }
+
+            // Show the full expression with "=" before showing the result
+            lblExpression.Text = fullExpression.Trim() + " =";
 
             string result = CalculatorEngine.Evaluate(fullExpression);
             txtDisplay.Text = result;
@@ -138,6 +181,7 @@ public partial class CalculatorForm : Form
         }
         catch (DivideByZeroException)
         {
+            lblExpression.Text = string.Empty;
             txtDisplay.Text = "Cannot divide by zero";
             _expression = string.Empty;
             _justCalculated = true;
@@ -145,6 +189,7 @@ public partial class CalculatorForm : Form
         }
         catch
         {
+            lblExpression.Text = string.Empty;
             txtDisplay.Text = "Error";
             _expression = string.Empty;
             _justCalculated = true;
@@ -156,6 +201,7 @@ public partial class CalculatorForm : Form
     {
         _expression = string.Empty;
         txtDisplay.Text = "0";
+        lblExpression.Text = string.Empty;
         _justCalculated = false;
         _lastWasOperator = false;
     }
@@ -173,5 +219,7 @@ public partial class CalculatorForm : Form
         {
             txtDisplay.Text = "0";
         }
+
+        UpdateExpressionDisplay();
     }
 }
