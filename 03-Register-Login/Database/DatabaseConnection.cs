@@ -1,7 +1,5 @@
 using System.Security.Cryptography;
-using System.Text;
 using Npgsql;
-using RegisterLogin.Models;
 
 namespace RegisterLogin.Database;
 
@@ -12,11 +10,54 @@ namespace RegisterLogin.Database;
 public static class DatabaseConnection
 {
     // ============================================================
-    // CONFIGURE YOUR POSTGRESQL PASSWORD HERE
-    // Replace YOUR_PASSWORD with your actual postgres password.
+    // PASSWORD IS READ FROM AN ENVIRONMENT VARIABLE
+    //
+    // Option A (recommended): set env var PG_PASSWORD to your real password
+    // Option B: set env var to whatever name you already use on your PC
+    //
+    // Change "PG_PASSWORD" below to match the name of YOUR user variable.
     // ============================================================
-    private const string ConnectionString =
-        "Host=localhost;Port=5432;Database=winforms_exercises;Username=postgres;Password=YOUR_PASSWORD;";
+    private const string PasswordEnvironmentVariableName = "PG_PASSWORD";
+
+    private static string GetConnectionString()
+    {
+        // Read the password from the Windows User environment variable
+        string? password = Environment.GetEnvironmentVariable(
+            PasswordEnvironmentVariableName,
+            EnvironmentVariableTarget.User);
+
+        // Also try Process scope (in case it was set only for the current session)
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            password = Environment.GetEnvironmentVariable(
+                PasswordEnvironmentVariableName,
+                EnvironmentVariableTarget.Process);
+        }
+
+        // Fallback: Machine (system) scope
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            password = Environment.GetEnvironmentVariable(
+                PasswordEnvironmentVariableName,
+                EnvironmentVariableTarget.Machine);
+        }
+
+        if (string.IsNullOrWhiteSpace(password))
+        {
+            throw new InvalidOperationException(
+                $"PostgreSQL password not found.\n\n" +
+                $"Create a User environment variable named '{PasswordEnvironmentVariableName}' " +
+                $"and set its value to your real postgres password.\n\n" +
+                "Steps:\n" +
+                "1. Windows Search → 'Environment Variables'\n" +
+                "2. Under 'User variables' click New\n" +
+                $"3. Name: {PasswordEnvironmentVariableName}\n" +
+                "4. Value: your actual postgres password\n" +
+                "5. OK, then RESTART Visual Studio (or the terminal) so it picks up the new variable.");
+        }
+
+        return $"Host=localhost;Port=5432;Database=winforms_exercises;Username=postgres;Password={password};";
+    }
 
     /// <summary>
     /// Creates a new open NpgsqlConnection.
@@ -24,7 +65,7 @@ public static class DatabaseConnection
     /// </summary>
     public static NpgsqlConnection GetConnection()
     {
-        var connection = new NpgsqlConnection(ConnectionString);
+        var connection = new NpgsqlConnection(GetConnectionString());
         connection.Open();
         return connection;
     }
@@ -34,14 +75,11 @@ public static class DatabaseConnection
     /// </summary>
     public static string HashPassword(string password)
     {
-        // Generate a random salt
         byte[] salt = RandomNumberGenerator.GetBytes(16);
 
-        // Derive a 32-byte key using PBKDF2 with 100,000 iterations
         using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100_000, HashAlgorithmName.SHA256);
         byte[] hash = pbkdf2.GetBytes(32);
 
-        // Store salt + hash together (base64)
         byte[] combined = new byte[salt.Length + hash.Length];
         Buffer.BlockCopy(salt, 0, combined, 0, salt.Length);
         Buffer.BlockCopy(hash, 0, combined, salt.Length, hash.Length);
@@ -57,7 +95,7 @@ public static class DatabaseConnection
         try
         {
             byte[] combined = Convert.FromBase64String(storedHash);
-            if (combined.Length != 48) // 16 salt + 32 hash
+            if (combined.Length != 48)
                 return false;
 
             byte[] salt = new byte[16];

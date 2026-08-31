@@ -26,22 +26,30 @@ CREATE TABLE IF NOT EXISTS users (
 );
 ```
 
-### 2. Set your PostgreSQL password
+### 2. Set your PostgreSQL password (environment variable)
 
-Open:
+The app reads the password from a **User environment variable** named `PG_PASSWORD`.
+
+**Create the variable:**
+
+1. Windows Search → type **Environment Variables** → Open **Edit the system environment variables**
+2. Click **Environment Variables...**
+3. Under **User variables** click **New...**
+4. Variable name: `PG_PASSWORD`
+5. Variable value: your real postgres password (the actual password, not another variable name)
+6. Click OK on all dialogs
+
+**Important:** Restart Visual Studio (or close and reopen the terminal) so it picks up the new variable.
+
+If your environment variable already has a different name, open:
 
 `Database/DatabaseConnection.cs`
 
-Find this line:
+and change this line to match your variable name:
 
 ```csharp
-private const string ConnectionString =
-    "Host=localhost;Port=5432;Database=winforms_exercises;Username=postgres;Password=YOUR_PASSWORD;";
+private const string PasswordEnvironmentVariableName = "PG_PASSWORD";
 ```
-
-Replace `YOUR_PASSWORD` with your actual PostgreSQL password.
-
-**Do not commit your real password to GitHub.**
 
 ### 3. Restore NuGet packages
 
