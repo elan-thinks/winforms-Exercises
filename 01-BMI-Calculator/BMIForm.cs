@@ -43,27 +43,33 @@ public partial class BMIForm : Form
         double heightMeters = heightCm / 100.0;
         double bmi = weightKg / (heightMeters * heightMeters);
 
-        // Determine category
+        // Determine category and recommendation
         string category;
+        string recommendation;
+
         if (bmi < 18.5)
         {
             category = "Underweight";
+            recommendation = "Consider a nutrient-rich diet with more calories and strength training. Consult a doctor or dietitian.";
         }
         else if (bmi < 25.0)
         {
             category = "Normal weight";
+            recommendation = "Great job! Maintain a balanced diet and stay active with regular exercise.";
         }
         else if (bmi < 30.0)
         {
             category = "Overweight";
+            recommendation = "Try a balanced diet, reduce sugary foods, and increase physical activity. Small changes help.";
         }
         else
         {
             category = "Obese";
+            recommendation = "Focus on healthy eating and regular exercise. Consider consulting a healthcare professional for personalized advice.";
         }
 
-        // Display result to two decimal places
-        lblSuggestion.Text = $"BMI: {bmi:F2} - {category}";
+        // Display BMI, category, and recommendation
+        lblSuggestion.Text = $"BMI: {bmi:F2} - {category}\n{recommendation}";
     }
 
     private void btnClear_Click(object sender, EventArgs e)

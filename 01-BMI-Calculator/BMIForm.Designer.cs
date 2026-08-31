@@ -131,10 +131,10 @@ namespace BMICalculator
             // lblSuggestion
             // 
             lblSuggestion.BorderStyle = BorderStyle.FixedSingle;
-            lblSuggestion.Font = new Font("Segoe UI", 11F, FontStyle.Regular, GraphicsUnit.Point);
-            lblSuggestion.Location = new Point(30, 240);
+            lblSuggestion.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
+            lblSuggestion.Location = new Point(20, 235);
             lblSuggestion.Name = "lblSuggestion";
-            lblSuggestion.Size = new Size(280, 50);
+            lblSuggestion.Size = new Size(300, 90);
             lblSuggestion.TabIndex = 9;
             lblSuggestion.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -142,7 +142,7 @@ namespace BMICalculator
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(340, 320);
+            ClientSize = new Size(340, 350);
             Controls.Add(lblSuggestion);
             Controls.Add(btnClear);
             Controls.Add(btnCalculate);
