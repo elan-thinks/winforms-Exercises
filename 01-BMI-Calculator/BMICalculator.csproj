@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>BMICalculator</RootNamespace>
+    <AssemblyName>BMICalculator</AssemblyName>
+    <ApplicationIcon />
+    <StartupObject>BMICalculator.Program</StartupObject>
+  </PropertyGroup>
+
+</Project>
