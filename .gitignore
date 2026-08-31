@@ -1,0 +1,17 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+*.nupkg
+*.snupkg
+.vs/
+
+## Secrets / local config (never commit real passwords)
+**/appsettings.*.json
+**/secrets.json
+**/local.settings.json

@@ -1,0 +1,78 @@
+# 03 — Register & Login with PostgreSQL
+
+A beginner-friendly WinForms exercise that teaches:
+
+- Visual Studio WinForms Designer
+- Form navigation
+- PostgreSQL + ADO.NET (Npgsql)
+- Parameterized queries
+- Simple password hashing (PBKDF2)
+
+## Setup steps
+
+### 1. Create the database
+
+Run the SQL in `sql/create_database.sql` (or manually):
+
+```sql
+CREATE DATABASE winforms_exercises;
+
+-- Then connect to winforms_exercises and run:
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 2. Set your PostgreSQL password
+
+Open:
+
+`Database/DatabaseConnection.cs`
+
+Find this line:
+
+```csharp
+private const string ConnectionString =
+    "Host=localhost;Port=5432;Database=winforms_exercises;Username=postgres;Password=YOUR_PASSWORD;";
+```
+
+Replace `YOUR_PASSWORD` with your actual PostgreSQL password.
+
+**Do not commit your real password to GitHub.**
+
+### 3. Restore NuGet packages
+
+The project uses the **Npgsql** package. Visual Studio will restore it automatically,
+or run:
+
+```bash
+cd 03-Register-Login
+dotnet restore
+```
+
+### 4. Run the project
+
+In Visual Studio:
+
+1. Open `WinFormsExercises.sln`
+2. Right-click **RegisterLogin** → Set as Startup Project
+3. Press F5
+
+Or from the command line:
+
+```bash
+cd 03-Register-Login
+dotnet run
+```
+
+The app starts on the **Login** form. Use the button at the bottom to go to Register.
+
+## Color theme
+
+- **Register form**: soft pastel lavender / soft pink
+- **Login form**: soft baby blue / cream
+
+All colors are set in the Designer files so you can see and edit them in Visual Studio Designer.
