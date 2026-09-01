@@ -32,9 +32,16 @@ public partial class LoginForm : Form
         {
             if (DatabaseConnection.ValidateLogin(username, password))
             {
-                var mainForm = new MainForm();
-                mainForm.Show();
-                this.Hide();
+                // Hide login, open inventory as modal, then exit when inventory closes
+                Hide();
+
+                using (var mainForm = new MainForm())
+                {
+                    mainForm.ShowDialog();
+                }
+
+                // When MainForm closes, end the app
+                Close();
             }
             else
             {
@@ -55,8 +62,17 @@ public partial class LoginForm : Form
 
     private void btnRegister_Click(object sender, EventArgs e)
     {
-        var registerForm = new RegisterForm();
-        registerForm.Show();
-        this.Hide();
+        Hide();
+
+        using (var registerForm = new RegisterForm())
+        {
+            registerForm.ShowDialog();
+        }
+
+        // After register form closes, show login again (unless they already signed in elsewhere)
+        if (!IsDisposed)
+        {
+            Show();
+        }
     }
 }

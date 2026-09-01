@@ -8,6 +8,10 @@ public partial class MainForm : Form
     public MainForm()
     {
         InitializeComponent();
+    }
+
+    private void MainForm_Load(object sender, EventArgs e)
+    {
         LoadProducts();
     }
 
@@ -20,8 +24,13 @@ public partial class MainForm : Form
         }
         catch (Exception ex)
         {
-            MessageBox.Show("Could not load products.\n\n" + ex.Message, "Database Error",
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(
+                "Could not load products.\n\n" +
+                "Make sure the 'products' table exists in database winforms_exercises.\n\n" +
+                "Error: " + ex.Message,
+                "Database Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
         }
     }
 
@@ -70,7 +79,7 @@ public partial class MainForm : Form
     private void btnAdd_Click(object sender, EventArgs e)
     {
         using var form = new ProductForm();
-        if (form.ShowDialog() == DialogResult.OK)
+        if (form.ShowDialog(this) == DialogResult.OK)
         {
             LoadProducts();
         }
@@ -96,7 +105,7 @@ public partial class MainForm : Form
         };
 
         using var form = new ProductForm(product);
-        if (form.ShowDialog() == DialogResult.OK)
+        if (form.ShowDialog(this) == DialogResult.OK)
         {
             LoadProducts();
         }
@@ -130,11 +139,5 @@ public partial class MainForm : Form
             MessageBox.Show("Could not delete product.\n\n" + ex.Message, "Database Error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-    }
-
-    protected override void OnFormClosed(FormClosedEventArgs e)
-    {
-        base.OnFormClosed(e);
-        Application.Exit();
     }
 }

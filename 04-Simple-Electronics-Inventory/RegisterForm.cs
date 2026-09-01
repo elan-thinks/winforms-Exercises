@@ -48,9 +48,9 @@ public partial class RegisterForm : Form
             DatabaseConnection.RegisterUser(username, password);
             MessageBox.Show("Registration successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            var loginForm = new LoginForm();
-            loginForm.Show();
-            this.Hide();
+            // Close register so login shows again
+            DialogResult = DialogResult.OK;
+            Close();
         }
         catch (InvalidOperationException ex) when (ex.Message == "Username already exists.")
         {
@@ -69,8 +69,7 @@ public partial class RegisterForm : Form
 
     private void btnBackToLogin_Click(object sender, EventArgs e)
     {
-        var loginForm = new LoginForm();
-        loginForm.Show();
-        this.Hide();
+        DialogResult = DialogResult.Cancel;
+        Close();
     }
 }
