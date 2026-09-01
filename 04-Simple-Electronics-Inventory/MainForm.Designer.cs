@@ -229,6 +229,7 @@ namespace ElectronicsInventory
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Electronics Inventory";
+            Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
             ResumeLayout(false);
             PerformLayout();
