@@ -26,7 +26,7 @@ public partial class MainForm : Form
         {
             MessageBox.Show(
                 "Could not load products.\n\n" +
-                "Make sure the 'products' table exists in database winforms_exercises.\n\n" +
+                "Make sure the products table has manufacture_date and expiry_date columns.\n\n" +
                 "Error: " + ex.Message,
                 "Database Error",
                 MessageBoxButtons.OK,
@@ -39,7 +39,14 @@ public partial class MainForm : Form
         dgvProducts.Rows.Clear();
         foreach (var p in products)
         {
-            dgvProducts.Rows.Add(p.Id, p.Name, p.Category, p.Price.ToString("F2"), p.Quantity);
+            dgvProducts.Rows.Add(
+                p.Id,
+                p.Name,
+                p.Category,
+                p.Price.ToString("F2"),
+                p.Quantity,
+                p.ManufactureDate.ToString("yyyy-MM-dd"),
+                p.ExpiryDate.ToString("yyyy-MM-dd"));
         }
     }
 
@@ -101,7 +108,9 @@ public partial class MainForm : Form
             Name = row.Cells["colName"].Value?.ToString() ?? "",
             Category = row.Cells["colCategory"].Value?.ToString() ?? "",
             Price = decimal.Parse(row.Cells["colPrice"].Value?.ToString() ?? "0"),
-            Quantity = int.Parse(row.Cells["colQuantity"].Value?.ToString() ?? "0")
+            Quantity = int.Parse(row.Cells["colQuantity"].Value?.ToString() ?? "0"),
+            ManufactureDate = DateTime.Parse(row.Cells["colManufactureDate"].Value?.ToString() ?? DateTime.Today.ToString()),
+            ExpiryDate = DateTime.Parse(row.Cells["colExpiryDate"].Value?.ToString() ?? DateTime.Today.ToString())
         };
 
         using var form = new ProductForm(product);

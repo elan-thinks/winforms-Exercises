@@ -10,7 +10,6 @@ namespace ElectronicsInventory.Database;
 /// </summary>
 public static class DatabaseConnection
 {
-    // Change this if your env variable has a different name
     private const string PasswordEnvironmentVariableName = "PG_PASSWORD";
 
     private static string GetConnectionString()
@@ -110,23 +109,30 @@ public static class DatabaseConnection
 
     // ---------- Products ----------
 
+    private static Product ReadProduct(NpgsqlDataReader reader)
+    {
+        return new Product
+        {
+            Id = reader.GetInt32(0),
+            Name = reader.GetString(1),
+            Category = reader.GetString(2),
+            Price = reader.GetDecimal(3),
+            Quantity = reader.GetInt32(4),
+            ManufactureDate = reader.GetDateTime(5),
+            ExpiryDate = reader.GetDateTime(6)
+        };
+    }
+
     public static List<Product> GetAllProducts()
     {
         var list = new List<Product>();
         using var conn = GetConnection();
         using var cmd = new NpgsqlCommand(
-            "SELECT id, name, category, price, quantity FROM products ORDER BY id", conn);
+            "SELECT id, name, category, price, quantity, manufacture_date, expiry_date FROM products ORDER BY id", conn);
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            list.Add(new Product
-            {
-                Id = reader.GetInt32(0),
-                Name = reader.GetString(1),
-                Category = reader.GetString(2),
-                Price = reader.GetDecimal(3),
-                Quantity = reader.GetInt32(4)
-            });
+            list.Add(ReadProduct(reader));
         }
         return list;
     }
@@ -136,7 +142,7 @@ public static class DatabaseConnection
         var list = new List<Product>();
         using var conn = GetConnection();
         using var cmd = new NpgsqlCommand(
-            @"SELECT id, name, category, price, quantity
+            @"SELECT id, name, category, price, quantity, manufacture_date, expiry_date
               FROM products
               WHERE name ILIKE @search OR category ILIKE @search
               ORDER BY id", conn);
@@ -144,42 +150,43 @@ public static class DatabaseConnection
         using var reader = cmd.ExecuteReader();
         while (reader.Read())
         {
-            list.Add(new Product
-            {
-                Id = reader.GetInt32(0),
-                Name = reader.GetString(1),
-                Category = reader.GetString(2),
-                Price = reader.GetDecimal(3),
-                Quantity = reader.GetInt32(4)
-            });
+            list.Add(ReadProduct(reader));
         }
         return list;
     }
 
-    public static bool InsertProduct(string name, string category, decimal price, int quantity)
+    public static bool InsertProduct(string name, string category, decimal price, int quantity,
+        DateTime manufactureDate, DateTime expiryDate)
     {
         using var conn = GetConnection();
         using var cmd = new NpgsqlCommand(
-            "INSERT INTO products (name, category, price, quantity) VALUES (@name, @category, @price, @quantity)", conn);
+            @"INSERT INTO products (name, category, price, quantity, manufacture_date, expiry_date)
+              VALUES (@name, @category, @price, @quantity, @manufacture_date, @expiry_date)", conn);
         cmd.Parameters.AddWithValue("name", name);
         cmd.Parameters.AddWithValue("category", category);
         cmd.Parameters.AddWithValue("price", price);
         cmd.Parameters.AddWithValue("quantity", quantity);
+        cmd.Parameters.AddWithValue("manufacture_date", manufactureDate.Date);
+        cmd.Parameters.AddWithValue("expiry_date", expiryDate.Date);
         return cmd.ExecuteNonQuery() > 0;
     }
 
-    public static bool UpdateProduct(int id, string name, string category, decimal price, int quantity)
+    public static bool UpdateProduct(int id, string name, string category, decimal price, int quantity,
+        DateTime manufactureDate, DateTime expiryDate)
     {
         using var conn = GetConnection();
         using var cmd = new NpgsqlCommand(
             @"UPDATE products
-              SET name = @name, category = @category, price = @price, quantity = @quantity
+              SET name = @name, category = @category, price = @price, quantity = @quantity,
+                  manufacture_date = @manufacture_date, expiry_date = @expiry_date
               WHERE id = @id", conn);
         cmd.Parameters.AddWithValue("id", id);
         cmd.Parameters.AddWithValue("name", name);
         cmd.Parameters.AddWithValue("category", category);
         cmd.Parameters.AddWithValue("price", price);
         cmd.Parameters.AddWithValue("quantity", quantity);
+        cmd.Parameters.AddWithValue("manufacture_date", manufactureDate.Date);
+        cmd.Parameters.AddWithValue("expiry_date", expiryDate.Date);
         return cmd.ExecuteNonQuery() > 0;
     }
 

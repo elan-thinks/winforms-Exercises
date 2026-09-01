@@ -28,6 +28,8 @@ namespace ElectronicsInventory
             colCategory = new DataGridViewTextBoxColumn();
             colPrice = new DataGridViewTextBoxColumn();
             colQuantity = new DataGridViewTextBoxColumn();
+            colManufactureDate = new DataGridViewTextBoxColumn();
+            colExpiryDate = new DataGridViewTextBoxColumn();
             btnAdd = new Button();
             btnEdit = new Button();
             btnDelete = new Button();
@@ -103,14 +105,15 @@ namespace ElectronicsInventory
             dgvProducts.AllowUserToDeleteRows = false;
             dgvProducts.BackgroundColor = Color.FromArgb(255, 252, 248);
             dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProducts.Columns.AddRange(new DataGridViewColumn[] { colId, colName, colCategory, colPrice, colQuantity });
+            dgvProducts.Columns.AddRange(new DataGridViewColumn[] {
+                colId, colName, colCategory, colPrice, colQuantity, colManufactureDate, colExpiryDate });
             dgvProducts.Location = new Point(20, 100);
             dgvProducts.MultiSelect = false;
             dgvProducts.Name = "dgvProducts";
             dgvProducts.ReadOnly = true;
             dgvProducts.RowHeadersVisible = false;
             dgvProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvProducts.Size = new Size(560, 280);
+            dgvProducts.Size = new Size(740, 280);
             dgvProducts.TabIndex = 5;
             // 
             // colId
@@ -118,35 +121,49 @@ namespace ElectronicsInventory
             colId.HeaderText = "ID";
             colId.Name = "colId";
             colId.ReadOnly = true;
-            colId.Width = 50;
+            colId.Width = 40;
             // 
             // colName
             // 
             colName.HeaderText = "Product Name";
             colName.Name = "colName";
             colName.ReadOnly = true;
-            colName.Width = 160;
+            colName.Width = 130;
             // 
             // colCategory
             // 
             colCategory.HeaderText = "Category";
             colCategory.Name = "colCategory";
             colCategory.ReadOnly = true;
-            colCategory.Width = 120;
+            colCategory.Width = 100;
             // 
             // colPrice
             // 
             colPrice.HeaderText = "Price";
             colPrice.Name = "colPrice";
             colPrice.ReadOnly = true;
-            colPrice.Width = 100;
+            colPrice.Width = 80;
             // 
             // colQuantity
             // 
-            colQuantity.HeaderText = "Quantity";
+            colQuantity.HeaderText = "Qty";
             colQuantity.Name = "colQuantity";
             colQuantity.ReadOnly = true;
-            colQuantity.Width = 90;
+            colQuantity.Width = 50;
+            // 
+            // colManufactureDate
+            // 
+            colManufactureDate.HeaderText = "Mfg Date";
+            colManufactureDate.Name = "colManufactureDate";
+            colManufactureDate.ReadOnly = true;
+            colManufactureDate.Width = 100;
+            // 
+            // colExpiryDate
+            // 
+            colExpiryDate.HeaderText = "Expiry";
+            colExpiryDate.Name = "colExpiryDate";
+            colExpiryDate.ReadOnly = true;
+            colExpiryDate.Width = 100;
             // 
             // btnAdd
             // 
@@ -213,7 +230,7 @@ namespace ElectronicsInventory
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(245, 250, 255);
-            ClientSize = new Size(600, 460);
+            ClientSize = new Size(780, 460);
             Controls.Add(btnRefresh);
             Controls.Add(btnDelete);
             Controls.Add(btnEdit);
@@ -248,6 +265,8 @@ namespace ElectronicsInventory
         private DataGridViewTextBoxColumn colCategory;
         private DataGridViewTextBoxColumn colPrice;
         private DataGridViewTextBoxColumn colQuantity;
+        private DataGridViewTextBoxColumn colManufactureDate;
+        private DataGridViewTextBoxColumn colExpiryDate;
         private Button btnAdd;
         private Button btnEdit;
         private Button btnDelete;

@@ -13,6 +13,13 @@ public partial class ProductForm : Form
         InitializeComponent();
         Text = "Add Product";
         lblTitle.Text = "Add Product";
+
+        // Default dates for new products
+        dtpManufactureDate.Value = DateTime.Today;
+        dtpExpiryDate.Value = DateTime.Today.AddYears(2);
+
+        if (cmbCategory.Items.Count > 0)
+            cmbCategory.SelectedIndex = 0;
     }
 
     /// <summary>Edit mode</summary>
@@ -23,17 +30,31 @@ public partial class ProductForm : Form
         lblTitle.Text = "Edit Product";
 
         txtName.Text = product.Name;
-        txtCategory.Text = product.Category;
+
+        // Select matching category in dropdown (or add it if missing)
+        int catIndex = cmbCategory.FindStringExact(product.Category);
+        if (catIndex >= 0)
+            cmbCategory.SelectedIndex = catIndex;
+        else
+        {
+            cmbCategory.Items.Add(product.Category);
+            cmbCategory.SelectedItem = product.Category;
+        }
+
         txtPrice.Text = product.Price.ToString("F2");
         txtQuantity.Text = product.Quantity.ToString();
+        dtpManufactureDate.Value = product.ManufactureDate;
+        dtpExpiryDate.Value = product.ExpiryDate;
     }
 
     private void btnSave_Click(object sender, EventArgs e)
     {
         string name = txtName.Text.Trim();
-        string category = txtCategory.Text.Trim();
+        string category = cmbCategory.SelectedItem?.ToString()?.Trim() ?? string.Empty;
         string priceText = txtPrice.Text.Trim();
         string quantityText = txtQuantity.Text.Trim();
+        DateTime manufactureDate = dtpManufactureDate.Value.Date;
+        DateTime expiryDate = dtpExpiryDate.Value.Date;
 
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -44,8 +65,8 @@ public partial class ProductForm : Form
 
         if (string.IsNullOrWhiteSpace(category))
         {
-            MessageBox.Show("Please enter a category.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            txtCategory.Focus();
+            MessageBox.Show("Please select a category.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            cmbCategory.Focus();
             return;
         }
 
@@ -65,17 +86,26 @@ public partial class ProductForm : Form
             return;
         }
 
+        if (expiryDate < manufactureDate)
+        {
+            MessageBox.Show("Expiry date cannot be before manufacture date.", "Validation",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            dtpExpiryDate.Focus();
+            return;
+        }
+
         try
         {
             if (_existingProduct is null)
             {
-                DatabaseConnection.InsertProduct(name, category, price, quantity);
+                DatabaseConnection.InsertProduct(name, category, price, quantity, manufactureDate, expiryDate);
                 MessageBox.Show("Product added successfully.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                DatabaseConnection.UpdateProduct(_existingProduct.Id, name, category, price, quantity);
+                DatabaseConnection.UpdateProduct(_existingProduct.Id, name, category, price, quantity,
+                    manufactureDate, expiryDate);
                 MessageBox.Show("Product updated successfully.", "Success",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
